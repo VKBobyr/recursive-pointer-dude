@@ -17,19 +17,19 @@ const boldFontPath = assetsPath + "/Montserrat-Bold.ttf"
 const pointerGuyPath = assetsPath + "/pointer-dude.jpg"
 const backgroundTilePath = assetsPath + "/bg.png"
 
-type Imager struct {
+type DudeGenerator struct {
 	image  *gg.Context
 	height int
 	width  int
 }
 
 func main() {
-	imager := Imager{}
+	imager := DudeGenerator{}
 	imager.GenerateBackground(4096, 4096)
 	imager.GeneraterPointerDudes()
 }
 
-func (c *Imager) GeneraterPointerDudes() {
+func (c *DudeGenerator) GeneraterPointerDudes() {
 	// setup
 	numDudes := 101
 	horizDisplacementFactor := .2
@@ -93,7 +93,7 @@ func (c *Imager) GeneraterPointerDudes() {
 	c.image.SavePNG(savePath)
 }
 
-func (c *Imager) LoadImage(str string) image.Image {
+func (c *DudeGenerator) LoadImage(str string) image.Image {
 	img, err := gg.LoadImage(str)
 	if err != nil {
 		panic(err)
@@ -101,7 +101,7 @@ func (c *Imager) LoadImage(str string) image.Image {
 	return img
 }
 
-func (c *Imager) GenerateBackground(width int, height int) {
+func (c *DudeGenerator) GenerateBackground(width int, height int) {
 	dc := gg.NewContext(width, height)
 
 	// background
@@ -114,7 +114,7 @@ func (c *Imager) GenerateBackground(width int, height int) {
 	c.width = width
 }
 
-func (c *Imager) LoadFont(size float64) {
+func (c *DudeGenerator) LoadFont(size float64) {
 	if err := c.image.LoadFontFace(boldFontPath, size); err != nil {
 		panic(err)
 	}
