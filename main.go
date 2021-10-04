@@ -25,19 +25,19 @@ type Imager struct {
 
 func main() {
 	imager := Imager{}
-	imager.GenerateBackground(4096, 3000)
+	imager.GenerateBackground(4096, 4096)
 	imager.GeneraterPointerDudes()
 }
 
 func (c *Imager) GeneraterPointerDudes() {
 	// setup
-	numDudes := 251
-	hIncrementFactor := .25
-	vIncrementFactor := .4
+	numDudes := 101
+	horizDisplacementFactor := .2
+	vertIncrementFactor := .55
 	dudeScalingFactor := .9
 	fontIncrementFactor := .95
 
-	// ptr guy
+	// ptr dude
 	originalDude := c.LoadImage(pointerGuyPath)
 	dudeHeight := originalDude.Bounds().Max.Y
 	dudeWidth := originalDude.Bounds().Max.Y
@@ -54,8 +54,8 @@ func (c *Imager) GeneraterPointerDudes() {
 		scaledDude := imaging.Resize(originalDude, int(float64(dudeHeight)*thisScale), int(float64(dudeWidth)*thisScale), imaging.ResampleFilter{})
 
 		// increment offsets
-		widthOffset += int(float64(scaledDude.Rect.Dx()) * hIncrementFactor)
-		heightOffset += int(float64(scaledDude.Rect.Dy()) * vIncrementFactor)
+		widthOffset += int(float64(scaledDude.Rect.Dx()) * horizDisplacementFactor)
+		heightOffset += int(float64(scaledDude.Rect.Dy()) * vertIncrementFactor)
 
 		// calculate vertical and horizontal positions
 		hPos := c.width / 2
@@ -74,10 +74,18 @@ func (c *Imager) GeneraterPointerDudes() {
 
 		// draw pointer
 		pointerString += "*"
-		c.LoadFont(17 * math.Pow(fontIncrementFactor, float64(dudeNum+1)))
+
+		// calculate font size based on height of dude
+		fontSize := float64(400) * (float64(scaledDude.Rect.Dx()) / float64(c.height))
+		c.LoadFont(fontSize)
 		c.image.SetRGB255(0x4A, 0xA9, 0xBC)
 		c.image.DrawStringAnchored(pointerString, float64(hPos), float64(vPos)-5, .5, 0)
 	}
+
+	// draw the 'int'
+	c.LoadFont(17 * math.Pow(fontIncrementFactor, float64(numDudes)))
+	c.image.SetRGB255(0x4A, 0xA9, 0xBC)
+	c.image.DrawStringAnchored(pointerString, float64(c.width/2), 10, .5, 0)
 
 	// save image
 	c.image.SavePNG(savePath)
