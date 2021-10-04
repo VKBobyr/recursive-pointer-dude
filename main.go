@@ -33,9 +33,8 @@ func (c *Imager) GeneraterPointerDudes() {
 	// setup
 	numDudes := 101
 	horizDisplacementFactor := .2
-	vertIncrementFactor := .55
+	vertIncrementFactor := .6
 	dudeScalingFactor := .9
-	fontIncrementFactor := .95
 
 	// ptr dude
 	originalDude := c.LoadImage(pointerGuyPath)
@@ -44,11 +43,11 @@ func (c *Imager) GeneraterPointerDudes() {
 
 	// positioning
 	heightOffset := 0
-	widthOffset := 0
+	widthOffset := c.width / 70
 
 	pointerString := "int"
 
-	for dudeNum := numDudes; dudeNum >= 0; dudeNum-- {
+	for dudeNum := numDudes - 1; dudeNum >= 0; dudeNum-- {
 		// rescale dudes
 		thisScale := math.Pow(dudeScalingFactor, float64(dudeNum+1))
 		scaledDude := imaging.Resize(originalDude, int(float64(dudeHeight)*thisScale), int(float64(dudeWidth)*thisScale), imaging.ResampleFilter{})
@@ -83,9 +82,12 @@ func (c *Imager) GeneraterPointerDudes() {
 	}
 
 	// draw the 'int'
-	c.LoadFont(17 * math.Pow(fontIncrementFactor, float64(numDudes)))
+	c.LoadFont(float64(c.height) / (20.0 * float64(numDudes)))
 	c.image.SetRGB255(0x4A, 0xA9, 0xBC)
-	c.image.DrawStringAnchored(pointerString, float64(c.width/2), 10, .5, 0)
+
+	strHorizontalBase := float64(c.width) * .45
+
+	c.image.DrawStringAnchored("int", strHorizontalBase, float64(c.height)/20, .5, 0)
 
 	// save image
 	c.image.SavePNG(savePath)
