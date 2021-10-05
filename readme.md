@@ -1,7 +1,7 @@
 To run:
 `go run main.go`
 
-Play around by tweaking these values in `GeneraterPointerDudes()`:
+Play around by tweaking these values in `GeneratePointerDudes()`:
 ```go
 numDudes := 101
 horizDisplacementFactor := .2

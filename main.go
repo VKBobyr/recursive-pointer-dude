@@ -26,24 +26,26 @@ type DudeGenerator struct {
 func main() {
 	imager := DudeGenerator{}
 	imager.GenerateBackground(4096, 4096)
-	imager.GeneraterPointerDudes()
+	imager.GeneratePointerDudes()
 }
 
-func (c *DudeGenerator) GeneraterPointerDudes() {
+func (c *DudeGenerator) GeneratePointerDudes() {
 	// setup
 	numDudes := 101
-	horizDisplacementFactor := .2
-	vertIncrementFactor := .6
+
+	// scaling
 	dudeScalingFactor := .9
+
+	// positioning
+	horizDisplacementFactor := .2
+	vertDisplacementFactor := .6
+	heightOffset := 0
+	widthOffset := c.width / 70
 
 	// ptr dude
 	originalDude := c.LoadImage(pointerGuyPath)
-	dudeHeight := originalDude.Bounds().Max.Y
+	dudeHeight := originalDude.Bounds().Max.X
 	dudeWidth := originalDude.Bounds().Max.Y
-
-	// positioning
-	heightOffset := 0
-	widthOffset := c.width / 70
 
 	pointerString := "int"
 
@@ -54,7 +56,7 @@ func (c *DudeGenerator) GeneraterPointerDudes() {
 
 		// increment offsets
 		widthOffset += int(float64(scaledDude.Rect.Dx()) * horizDisplacementFactor)
-		heightOffset += int(float64(scaledDude.Rect.Dy()) * vertIncrementFactor)
+		heightOffset += int(float64(scaledDude.Rect.Dy()) * vertDisplacementFactor)
 
 		// calculate vertical and horizontal positions
 		hPos := c.width / 2
